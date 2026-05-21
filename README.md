@@ -157,8 +157,8 @@ query {
 
 ## 👥 Team
 
-- **Khadija Ayadi** — Auth Service, API Gateway, Docker Compose, CI/CD
-- **Shayma Trabelsi** — Vehicles, Traffic, Incidents, Notifications Services, Postman Collection, UML Diagrams
+- **Khadija Ayadi** — Auth Service, API Gateway, Docker Compose, CI/CD , Postman Collectio
+- **Shayma Trabelsi** — Vehicles, Traffic, Incidents, Notifications Services
 
 ## 📁 Project Structure
 
