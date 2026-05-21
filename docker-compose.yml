@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Database
+  mysql:
+    image: mysql:8
+    container_name: urban_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: urban_traffic
+    ports:
+      - '3307:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - urban_network
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 10s
+      retries: 5
+
+  # Auth Service
+  auth:
+    build:
+      context: ./services/auth
+      dockerfile: Dockerfile
+    container_name: urban_auth
+    ports:
+      - '3001:3001'
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: urban_traffic
+      JWT_SECRET: urban_traffic_jwt_secret_2024
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - urban_network
+
+
+  # API Gateway
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    container_name: urban_gateway
+    ports:
+      - '4000:4000'
+    environment:
+      AUTH_SERVICE_URL: http://auth:3001
+    depends_on:
+      - auth
+    networks:
+      - urban_network
+
+networks:
+  urban_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
