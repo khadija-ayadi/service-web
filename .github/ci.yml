@@ -1,0 +1,62 @@
+name: CI/CD Urban Traffic Platform
+
+on:
+  push:
+    branches: [main, khadija]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-auth:
+    name: Build & Test Auth Service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./services/auth
+        run: npm install --legacy-peer-deps
+
+      - name: Build auth service
+        working-directory: ./services/auth
+        run: npm run build
+
+  build-gateway:
+    name: Build & Test Gateway
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./gateway
+        run: npm install --legacy-peer-deps
+
+      - name: Build gateway
+        working-directory: ./gateway
+        run: npm run build
+
+  docker-build:
+    name: Docker Compose Build
+    runs-on: ubuntu-latest
+    needs: [build-auth, build-gateway]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker images
+        run: docker compose build auth gateway
