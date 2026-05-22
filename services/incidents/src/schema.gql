@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Incident {
+  id: ID!
+  title: String!
+  location: String!
+  type: IncidentType!
+  status: IncidentStatus!
+  description: String
+  reportedBy: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum IncidentType {
+  ACCIDENT
+  WORKS
+  CLOSED_ROAD
+  TRAFFIC_JAM
+}
+
+enum IncidentStatus {
+  REPORTED
+  IN_PROGRESS
+  RESOLVED
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  incidents: [Incident!]!
+  incident(id: String!): Incident!
+}
+
+type Mutation {
+  createIncident(input: CreateIncidentInput!): Incident!
+  updateIncidentStatus(input: UpdateIncidentStatusInput!): Incident!
+}
+
+input CreateIncidentInput {
+  title: String!
+  location: String!
+  type: IncidentType!
+  description: String
+  reportedBy: String!
+}
+
+input UpdateIncidentStatusInput {
+  id: String!
+  status: IncidentStatus!
+}

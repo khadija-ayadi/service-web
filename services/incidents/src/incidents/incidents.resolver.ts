@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { IncidentsService } from './incidents/incidents.service';
+import { IncidentsService } from './incidents.service';
 import { Incident } from './incident.entity';
 import { CreateIncidentInput, UpdateIncidentStatusInput } from './dto/incident.dto';
 

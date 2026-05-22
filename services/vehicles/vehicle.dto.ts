@@ -1,6 +1,6 @@
 import { InputType, Field, Float } from '@nestjs/graphql';
 import { IsString, IsEnum, IsUUID, IsLatitude, IsLongitude, IsOptional } from 'class-validator';
-import { VehicleType } from '../vehicle.entity';
+import { VehicleType } from 'src/vehicles/vehicle.entity';
 
 @InputType()
 export class CreateVehicleInput {

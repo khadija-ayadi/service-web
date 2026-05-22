@@ -1,0 +1,73 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Vehicle = exports.VehicleType = void 0;
+const graphql_1 = require("@nestjs/graphql");
+const typeorm_1 = require("typeorm");
+const position_entity_1 = require("../positions/position.entity");
+var VehicleType;
+(function (VehicleType) {
+    VehicleType["CAR"] = "CAR";
+    VehicleType["TRUCK"] = "TRUCK";
+    VehicleType["BUS"] = "BUS";
+    VehicleType["MOTORCYCLE"] = "MOTORCYCLE";
+})(VehicleType || (exports.VehicleType = VehicleType = {}));
+(0, graphql_1.registerEnumType)(VehicleType, { name: 'VehicleType' });
+let Vehicle = class Vehicle {
+    id;
+    plateNumber;
+    model;
+    type;
+    ownerId;
+    positions;
+    createdAt;
+};
+exports.Vehicle = Vehicle;
+__decorate([
+    (0, graphql_1.Field)(() => graphql_1.ID),
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
+], Vehicle.prototype, "id", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], Vehicle.prototype, "plateNumber", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Vehicle.prototype, "model", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => VehicleType),
+    (0, typeorm_1.Column)({ type: 'enum', enum: VehicleType }),
+    __metadata("design:type", String)
+], Vehicle.prototype, "type", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Vehicle.prototype, "ownerId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => [position_entity_1.GpsPosition], { nullable: true }),
+    (0, typeorm_1.OneToMany)(() => position_entity_1.GpsPosition, (position) => position.vehicle),
+    __metadata("design:type", Array)
+], Vehicle.prototype, "positions", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Vehicle.prototype, "createdAt", void 0);
+exports.Vehicle = Vehicle = __decorate([
+    (0, graphql_1.ObjectType)(),
+    (0, typeorm_1.Entity)('vehicles')
+], Vehicle);
+//# sourceMappingURL=vehicle.entity.js.map
